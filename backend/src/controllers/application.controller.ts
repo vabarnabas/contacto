@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import ApplicationService from "../services/application.service";
 import { zValidator } from "@hono/zod-validator";
 import {
+  createApiKeySchema,
   createApplicationSchema,
   updateApplicationSchema,
 } from "../types/application.dto";
@@ -31,6 +32,22 @@ applicationController.post(
     try {
       const application = await applicationService.create(dto);
       return c.json(application);
+    } catch {
+      return c.json({ message: "An error occurred" }, 500);
+    }
+  }
+);
+
+applicationController.post(
+  "/:id/api-keys",
+  zValidator("json", createApiKeySchema),
+  async (c) => {
+    const { id } = c.req.param();
+    const dto = c.req.valid("json");
+
+    try {
+      const apiKey = await applicationService.createApiKey(dto);
+      return c.json(apiKey);
     } catch {
       return c.json({ message: "An error occurred" }, 500);
     }

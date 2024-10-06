@@ -1,5 +1,10 @@
-import { CreateApplication, UpdateApplication } from "../types/application.dto";
+import {
+  CreateApiKey,
+  CreateApplication,
+  UpdateApplication,
+} from "../types/application.dto";
 import { prisma } from "../prisma";
+import { randomBytes } from "crypto";
 
 export default function ApplicationService() {
   async function findAll() {
@@ -10,6 +15,9 @@ export default function ApplicationService() {
     return await prisma.application.findUnique({
       where: {
         id,
+      },
+      include: {
+        apiKeys: true,
       },
     });
   }
@@ -25,6 +33,14 @@ export default function ApplicationService() {
   async function create(dto: CreateApplication) {
     return await prisma.application.create({
       data: dto,
+    });
+  }
+
+  async function createApiKey(dto: CreateApiKey) {
+    const key = randomBytes(32).toString("hex");
+
+    return await prisma.apiKey.create({
+      data: { ...dto, key },
     });
   }
 
@@ -52,6 +68,7 @@ export default function ApplicationService() {
     findSpecific,
     findMy,
     create,
+    createApiKey,
     update,
     remove,
   };

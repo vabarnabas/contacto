@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 const user: Omit<User, "id"> = {
   name: "Admin User",
-  email: "admin@localhost",
+  email: "admin@localhost.io",
   password: "pass",
 };
 

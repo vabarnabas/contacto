@@ -1,6 +1,6 @@
 "use server";
 
-import { CreateApplication } from "@/types/application.dto";
+import { CreateApiKey, CreateApplication } from "@/types/application.dto";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser, handleWrongToken } from "./auth";
 import { cookies } from "next/headers";
@@ -15,7 +15,7 @@ export async function createApplication(dto: CreateApplication) {
 
   const currentUser = await getCurrentUser(token.value);
 
-  const createApplicationRepsone = await fetch(
+  const createApplicationResponse = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/applications`,
     {
       method: "POST",
@@ -29,10 +29,35 @@ export async function createApplication(dto: CreateApplication) {
     }
   );
 
-  if (!createApplicationRepsone.ok) {
+  if (!createApplicationResponse.ok) {
     throw new Error("Create Application Failed");
   }
 
   revalidatePath("/dashboard");
   redirect("/dashboard");
+}
+
+export async function createApiKey(dto: CreateApiKey) {
+  const token = cookies().get("access_token");
+
+  if (!token || !token.value) {
+    return handleWrongToken;
+  }
+
+  const createApiKeyResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/applications/${dto.applicationId}/api-keys`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dto),
+    }
+  );
+
+  if (!createApiKeyResponse.ok) {
+    throw new Error("Create API Key Failed");
+  }
+
+  revalidatePath(`/dashboard/applications/${dto.applicationId}`);
 }

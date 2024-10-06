@@ -41,13 +41,13 @@ export default async function ApplicationsParralellSection() {
           key={application.id}
           className="border pl-4 pr-3 py-2.5 rounded-lg"
         >
-          <p className="font-semibold flex justify-between items-center">
+          <div className="font-semibold flex justify-between items-center">
             <div className="flex items-center gap-x-2">
               <AppWindowMac className="size-5 text-primary" />
               {application.name}
             </div>
             <ApplicationCardDropdown id={application.id} />
-          </p>
+          </div>
         </div>
       ))}
     </div>
