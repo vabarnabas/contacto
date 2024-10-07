@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { responseSchema } from "./response.dto";
 
 export const createApplicationSchema = z.object({
   name: z.string().min(3).max(255),
@@ -27,6 +28,7 @@ export const applicationSchema = z.object({
   name: z.string(),
   userId: z.string(),
   apiKeys: z.array(apiKeySchema),
+  responses: z.array(responseSchema),
 });
 
 export type Application = z.infer<typeof applicationSchema>;

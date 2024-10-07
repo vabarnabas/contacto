@@ -20,6 +20,8 @@ model User {
   password     String
   applications Application[]
 
+  createdAt DateTime @default(now()) @map("created_at")
+
   @@map("users")
 }
 
@@ -30,7 +32,10 @@ model Application {
   userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id])
 
-  apiKeys ApiKey[]
+  apiKeys   ApiKey[]
+  responses Response[]
+
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@map("applications")
 }
@@ -45,4 +50,21 @@ model ApiKey {
 
   applicationId String      @map("application_id")
   application   Application @relation(fields: [applicationId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("api_keys")
+}
+
+model Response {
+  id String @id @default(uuid())
+
+  applicationId String      @map("application_id")
+  application   Application @relation(fields: [applicationId], references: [id])
+
+  name        String
+  phoneNumber String   @map("phone_number")
+  email       String
+  message     String
+  createdAt   DateTime @default(now()) @map("created_at")
 }

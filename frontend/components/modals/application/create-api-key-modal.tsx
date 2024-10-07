@@ -16,8 +16,10 @@ export default function CreateApiKeyModal({
 }: {
   applicationId: string;
 }) {
+  const [isOpen, setIsOpen] = React.useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button size="sm">Create API Key</Button>
       </DialogTrigger>
@@ -28,7 +30,7 @@ export default function CreateApiKeyModal({
             Create an API Key to use your application with the API.
           </DialogDescription>
         </DialogHeader>
-        <CreateApiKeyForm applicationId={applicationId} />
+        <CreateApiKeyForm applicationId={applicationId} setIsOpen={setIsOpen} />
       </DialogContent>
     </Dialog>
   );

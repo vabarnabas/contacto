@@ -17,8 +17,10 @@ import { toast } from "sonner";
 
 export default function CreateApiKeyForm({
   applicationId,
+  setIsOpen,
 }: {
   applicationId: string;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const form = useForm<CreateApiKey>({
     defaultValues: { applicationId },
@@ -27,6 +29,7 @@ export default function CreateApiKeyForm({
 
   const onSubmit = form.handleSubmit((data) => {
     toast.promise(createApiKey(data));
+    setIsOpen(false);
   });
 
   return (

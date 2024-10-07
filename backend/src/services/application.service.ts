@@ -21,6 +21,7 @@ export default function ApplicationService() {
       },
       include: {
         apiKeys: true,
+        responses: true,
       },
     });
   }
