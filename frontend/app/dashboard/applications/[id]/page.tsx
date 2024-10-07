@@ -1,8 +1,10 @@
+import CopyButton from "@/components/copy-button/copy-button";
 import CreateApiKeyModal from "@/components/modals/application/create-api-key-modal";
 import ApplicationTabs from "@/components/tabs/application/application-tabs";
 import { buttonVariants } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { decrypt } from "@/lib/actions/encryption";
 import { cn } from "@/lib/utils";
 import { Application } from "@/types/application.dto";
 import { KeyRound } from "lucide-react";
@@ -57,12 +59,13 @@ export default async function ApplicationPage({
               {application.apiKeys.map((apiKey) => (
                 <div
                   key={apiKey.id}
-                  className="border rounded-lg pl-4 pr-3 py-2"
+                  className="border rounded-lg pl-4 pr-3 py-1 flex items-center justify-between"
                 >
                   <p className="font-medium flex items-center gap-x-1.5">
                     <KeyRound className="text-primary size-4" />
                     {apiKey.name}
                   </p>
+                  <CopyButton content={decrypt(apiKey.key)} />
                 </div>
               ))}
             </div>

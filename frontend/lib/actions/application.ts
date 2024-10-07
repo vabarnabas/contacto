@@ -45,7 +45,7 @@ export async function createApiKey(dto: CreateApiKey) {
   }
 
   const createApiKeyResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/applications/${dto.applicationId}/api-keys`,
+    `${process.env.NEXT_PUBLIC_API_URL}/applications/api-keys`,
     {
       method: "POST",
       headers: {

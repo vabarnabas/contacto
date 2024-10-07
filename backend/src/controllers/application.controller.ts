@@ -39,10 +39,9 @@ applicationController.post(
 );
 
 applicationController.post(
-  "/:id/api-keys",
+  "/api-keys",
   zValidator("json", createApiKeySchema),
   async (c) => {
-    const { id } = c.req.param();
     const dto = c.req.valid("json");
 
     try {
@@ -81,6 +80,17 @@ applicationController.delete("/:id", async (c) => {
   try {
     await applicationService.remove(id);
     return c.json({ message: "Application deleted" });
+  } catch {
+    return c.json({ message: "An error occurred" }, 500);
+  }
+});
+
+applicationController.delete("/api-keys/:id", async (c) => {
+  const { id } = c.req.param();
+
+  try {
+    await applicationService.removeApiKey(id);
+    return c.json({ message: "API Key deleted" });
   } catch {
     return c.json({ message: "An error occurred" }, 500);
   }

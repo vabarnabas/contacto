@@ -5,6 +5,9 @@ import {
 } from "../types/application.dto";
 import { prisma } from "../prisma";
 import { randomBytes } from "crypto";
+import EncryptionService from "./encryption.service";
+
+const encryptionService = EncryptionService();
 
 export default function ApplicationService() {
   async function findAll() {
@@ -39,8 +42,10 @@ export default function ApplicationService() {
   async function createApiKey(dto: CreateApiKey) {
     const key = randomBytes(32).toString("hex");
 
+    const encryptedKey = encryptionService.encrypt(key);
+
     return await prisma.apiKey.create({
-      data: { ...dto, key },
+      data: { ...dto, key: encryptedKey },
     });
   }
 
@@ -63,6 +68,14 @@ export default function ApplicationService() {
     });
   }
 
+  async function removeApiKey(id: string) {
+    return await prisma.apiKey.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
   return {
     findAll,
     findSpecific,
@@ -71,5 +84,6 @@ export default function ApplicationService() {
     createApiKey,
     update,
     remove,
+    removeApiKey,
   };
 }
