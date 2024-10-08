@@ -4,10 +4,10 @@ import { pbkdf2Sync, randomBytes } from "crypto";
 
 const prisma = new PrismaClient();
 
-const user: Omit<User, "id"> = {
+const user: Omit<User, "id" | "createdAt"> = {
   name: "Admin User",
   email: "admin@localhost.io",
-  password: "pass",
+  password: process.env.SEED_USER_PASSWORD!,
 };
 
 const hashPassword = (password: string) => {

@@ -8,11 +8,8 @@ const encryptionService = EncryptionService();
 export const apiKeyMiddleware = () => {
   return createMiddleware(async (c, next) => {
     const body = await c.req.json();
-    console.log(c.req.header());
     const applicationId = body.applicationId as string;
     const apiKey = c.req.header("x-api-key");
-
-    console.log({ applicationId, apiKey });
 
     if (!apiKey || !applicationId) {
       return c.json({ message: "Unauthorized" }, 401);
