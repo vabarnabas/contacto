@@ -5,6 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { decrypt } from "@/lib/actions/encryption";
+import { getToken } from "@/lib/actions/token";
 import { cn } from "@/lib/utils";
 import { Application } from "@/types/application.dto";
 import { KeyRound } from "lucide-react";
@@ -16,9 +17,14 @@ export default async function ApplicationPage({
 }: {
   params: { id: string };
 }) {
+  const token = await getToken();
   const applicationResponse = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/applications/${id}`,
     {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       cache: "no-cache",
     }
   );

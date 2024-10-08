@@ -3,6 +3,7 @@ import ResponseService from "../services/response.service";
 import { zValidator } from "@hono/zod-validator";
 import { createResponseSchema } from "../types/response.dto";
 import { apiKeyMiddleware } from "../middlewares/api-key.middleware copy";
+import { authMiddleware } from "../middlewares/auth.middleware";
 
 const responseService = ResponseService();
 export const responseController = new Hono();
@@ -43,7 +44,7 @@ responseController.post(
   }
 );
 
-responseController.delete("/:id", async (c) => {
+responseController.delete("/:id", authMiddleware(), async (c) => {
   const { id } = c.req.param();
 
   try {

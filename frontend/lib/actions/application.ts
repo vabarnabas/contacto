@@ -10,7 +10,7 @@ export async function createApplication(dto: CreateApplication) {
   const token = cookies().get("access_token");
 
   if (!token || !token.value) {
-    return handleWrongToken;
+    return handleWrongToken();
   }
 
   const currentUser = await getCurrentUser(token.value);
@@ -41,7 +41,7 @@ export async function createApiKey(dto: CreateApiKey) {
   const token = cookies().get("access_token");
 
   if (!token || !token.value) {
-    return handleWrongToken;
+    return handleWrongToken();
   }
 
   const createApiKeyResponse = await fetch(

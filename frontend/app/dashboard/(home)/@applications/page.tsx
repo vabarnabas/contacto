@@ -1,12 +1,19 @@
 import ApplicationCardDropdown from "@/components/dropdowns/application/application-card-dropdown";
+import { getToken } from "@/lib/actions/token";
 import { Application } from "@/types/application.dto";
 import { AppWindowMac, Box } from "lucide-react";
 import React from "react";
 
 export default async function ApplicationsParralellSection() {
+  const token = await getToken();
+
   const applicationResponse = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/applications`,
     {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       cache: "no-cache",
     }
   );

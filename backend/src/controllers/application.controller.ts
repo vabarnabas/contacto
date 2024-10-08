@@ -6,17 +6,18 @@ import {
   createApplicationSchema,
   updateApplicationSchema,
 } from "../types/application.dto";
+import { authMiddleware } from "../middlewares/auth.middleware";
 
 export const applicationController = new Hono();
 
 const applicationService = ApplicationService();
 
-applicationController.get("/", async (c) => {
+applicationController.get("/", authMiddleware(), async (c) => {
   const applications = await applicationService.findAll();
   return c.json(applications);
 });
 
-applicationController.get("/:id", async (c) => {
+applicationController.get("/:id", authMiddleware(), async (c) => {
   const { id } = c.req.param();
 
   const application = await applicationService.findSpecific(id);
@@ -25,6 +26,7 @@ applicationController.get("/:id", async (c) => {
 
 applicationController.post(
   "/",
+  authMiddleware(),
   zValidator("json", createApplicationSchema),
   async (c) => {
     const dto = c.req.valid("json");
@@ -40,6 +42,7 @@ applicationController.post(
 
 applicationController.post(
   "/api-keys",
+  authMiddleware(),
   zValidator("json", createApiKeySchema),
   async (c) => {
     const dto = c.req.valid("json");
@@ -60,6 +63,7 @@ applicationController.post(
 
 applicationController.patch(
   "/:id",
+  authMiddleware(),
   zValidator("json", updateApplicationSchema),
   async (c) => {
     const { id } = c.req.param();
