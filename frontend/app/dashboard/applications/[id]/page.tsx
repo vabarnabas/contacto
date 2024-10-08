@@ -43,12 +43,27 @@ export default async function ApplicationPage({
       <ApplicationTabs />
       <TabsContent className="mt-4" value="responses">
         <p className="text-2xl font-bold mb-2">Responses</p>
+        <div className="space-y-2">
+          {application.responses.map((response) => (
+            <div key={response.id} className="bg-secondary p-4 rounded-lg">
+              <div className="">
+                <Label>Sender</Label>
+                <p className="font-semibold">{response.name}</p>
+                <p className="font-medium text-sm">{response.email}</p>
+              </div>
+              <div className="mt-6">
+                <Label>Message</Label>
+                <p className="font-medium">{response.message}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </TabsContent>
       <TabsContent className="mt-4 space-y-4" value="settings">
         <p className="text-2xl font-bold -mb-2">Settings</p>
         <div className="">
           <Label>Application ID</Label>
-          <p className="bg-secondary px-2 py-1 rounded-md mt-2 select-all">
+          <p className="bg-secondary pl-4 pr-3 py-1.5 rounded-md mt-2 select-all">
             {application.id}
           </p>
         </div>

@@ -6,6 +6,7 @@ import * as dotenv from "dotenv";
 import { applicationController } from "./controllers/application.controller";
 import { userController } from "./controllers/user.controller";
 import { authController } from "./controllers/auth.controller";
+import { responseController } from "./controllers/response.controller";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.get("/", (c) => {
 app.route("/applications", applicationController);
 app.route("/users", userController);
 app.route("/auth", authController);
+app.route("/responses", responseController);
 
 const port = parseInt(process.env.PORT || "3000");
 console.log(`Server is running on port ${port}`);

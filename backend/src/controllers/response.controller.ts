@@ -2,9 +2,10 @@ import { Hono } from "hono";
 import ResponseService from "../services/response.service";
 import { zValidator } from "@hono/zod-validator";
 import { createResponseSchema } from "../types/response.dto";
+import { apiKeyMiddleware } from "../middlewares/api-key.middleware copy";
 
 const responseService = ResponseService();
-const responseController = new Hono();
+export const responseController = new Hono();
 
 responseController.get("/", async (c) => {
   const responses = await responseService.findAll();
@@ -29,6 +30,7 @@ responseController.get("/application/:id", async (c) => {
 responseController.post(
   "/",
   zValidator("json", createResponseSchema),
+  apiKeyMiddleware(),
   async (c) => {
     const dto = c.req.valid("json");
 

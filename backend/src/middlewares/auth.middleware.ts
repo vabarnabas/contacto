@@ -7,13 +7,13 @@ export const authMiddleware = () => {
     const authHeader = c.req.header("Authorization");
 
     if (!authHeader) {
-      return c.json("Unauthorized", 401);
+      return c.json({ message: "Unauthorized" }, 401);
     }
 
     const token = authHeader.split(" ")[1];
 
     if (!token) {
-      return c.json("Unauthorized", 401);
+      return c.json({ message: "Unauthorized" }, 401);
     }
 
     try {
@@ -21,7 +21,7 @@ export const authMiddleware = () => {
       c.set("user", payload);
       return await next();
     } catch {
-      return c.json("Unauthorized", 401);
+      return c.json({ message: "Unauthorized" }, 401);
     }
   });
 };
